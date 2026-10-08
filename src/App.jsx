@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import './App.css'
 import Thought from './components/Thought'
+import ThoughtForm from './components/ThoughtForm'
 
 const API_URL = 'https://happy-thoughts-api-4ful.onrender.com'
 
@@ -40,9 +41,39 @@ function App() {
       })
   }
 
+  const handleCreate = (message) => {
+    fetch(`${API_URL}/thoughts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: message,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`)
+        }
+
+        return response.json()
+      })
+      .then((newThought) => {
+        setThoughts((currentThoughts) => [
+          newThought,
+          ...currentThoughts,
+        ])
+      })
+      .catch((error) => {
+        console.error('Failed to create thought:', error)
+      })
+  }
+
   return (
     <main>
       <h1>Happy Thoughts</h1>
+
+      <ThoughtForm onCreate={handleCreate} />
 
       {thoughts.map((thought) => (
         <Thought
