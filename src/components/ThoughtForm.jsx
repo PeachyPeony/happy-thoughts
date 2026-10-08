@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 function ThoughtForm({ onCreate }) {
     const [message, setMessage] = useState('')
+    const [error, setError] = useState('')
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -10,8 +11,15 @@ function ThoughtForm({ onCreate }) {
             return
         }
 
+        setError('')
+
         onCreate(message)
-        setMessage('')
+            .then(() => {
+                setMessage('')
+            })
+            .catch(() => {
+                setError('Could not send your thought. Please try again.')
+            })
     }
 
     return (
@@ -26,6 +34,9 @@ function ThoughtForm({ onCreate }) {
                 onChange={(event) => setMessage(event.target.value)}
                 placeholder="Share a happy thought..."
             />
+
+            {error && <p role="alert">{error}</p>}
+
             <button type="submit">
                 Send happy thought
             </button>

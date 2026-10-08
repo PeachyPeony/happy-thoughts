@@ -59,7 +59,7 @@ function App() {
   }
 
   const handleCreate = (message) => {
-    fetch(`${API_URL}/thoughts`, {
+    return fetch(`${API_URL}/thoughts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,6 +83,7 @@ function App() {
       })
       .catch((error) => {
         console.error('Failed to create thought:', error)
+        throw error
       })
   }
 
