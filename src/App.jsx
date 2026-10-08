@@ -12,10 +12,12 @@ function App() {
     fetch(`${API_URL}/thoughts`)
       .then((response) => response.json())
       .then((data) => {
-        setThoughts(data)
+        const sortedThoughts = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )
+        setThoughts(sortedThoughts)
       })
   }, [])
-
   const handleLike = (id) => {
     fetch(`${API_URL}/thoughts/${id}/like`, {
       method: 'POST',
