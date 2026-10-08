@@ -7,15 +7,30 @@ const API_URL = 'https://happy-thoughts-api-4ful.onrender.com'
 
 function App() {
   const [thoughts, setThoughts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     fetch(`${API_URL}/thoughts`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch thoughts.')
+        }
+
+        return response.json()
+      })
       .then((data) => {
         const sortedThoughts = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )
         setThoughts(sortedThoughts)
+      })
+      .catch((error) => {
+        console.error('Failed to fetch thoughts:', error)
+        setError('Could not load happy thoughts. Please try again.')
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }, [])
   const handleLike = (id) => {
@@ -76,14 +91,19 @@ function App() {
       <h1>Happy Thoughts</h1>
 
       <ThoughtForm onCreate={handleCreate} />
-
-      {thoughts.map((thought) => (
-        <Thought
-          key={thought._id}
-          thought={thought}
-          onLike={handleLike}
-        />
-      ))}
+      {isLoading ? (
+        <p>Loading happy thoughts...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        thoughts.map((thought) => (
+          <Thought
+            key={thought._id}
+            thought={thought}
+            onLike={handleLike}
+          />
+        ))
+      )}
     </main>
   )
 }
