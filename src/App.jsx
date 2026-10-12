@@ -9,6 +9,7 @@ function App() {
   const [thoughts, setThoughts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [likeError, setLikeError] = useState('')
 
   useEffect(() => {
     fetch(`${API_URL}/thoughts`)
@@ -55,6 +56,7 @@ function App() {
       })
       .catch((error) => {
         console.error('Failed to like thought:', error)
+        setLikeError('Could not like this thought. Please try again.')
       })
   }
 
@@ -92,6 +94,9 @@ function App() {
       <h1>Happy Thoughts</h1>
 
       <ThoughtForm onCreate={handleCreate} />
+
+      {likeError && <p role="alert">{likeError}</p>}
+
       {isLoading ? (
         <p>Loading happy thoughts...</p>
       ) : error ? (
