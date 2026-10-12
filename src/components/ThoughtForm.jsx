@@ -3,27 +3,30 @@ import { useState } from 'react'
 function ThoughtForm({ onCreate }) {
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        if (!message.trim()) {
-            return
-        }
+        if (!trimmedMessage || isSubmitting) return
 
         setError('')
+        setIsSubmitting(true)
 
-        onCreate(message)
+        onCreate(trimmedMessage)
             .then(() => {
                 setMessage('')
             })
             .catch(() => {
                 setError('Could not send your thought. Please try again.')
             })
+            .finally(() => {
+                setIsSubmitting(false)
+            })
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="thought-form" onSubmit={handleSubmit}>
             <label htmlFor="message">
                 What's making you happy right now?
             </label>
@@ -33,12 +36,17 @@ function ThoughtForm({ onCreate }) {
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
                 placeholder="Share a happy thought..."
+                required
             />
 
-            {error && <p role="alert">{error}</p>}
+            {error && <p className="form-error" role="alert">{error}</p>}
 
-            <button type="submit">
-                Send happy thought
+            <button
+                className="submit-button"
+                type="submit"
+                disabled={!message.trim() || isSubmitting}
+            >
+                ❤️ {isSubmitting ? 'Sending...' : 'Send Happy Thought'} ❤️
             </button>
         </form>
     )

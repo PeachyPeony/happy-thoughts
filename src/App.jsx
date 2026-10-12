@@ -91,7 +91,6 @@ function App() {
 
   return (
     <main>
-      <h1>Happy Thoughts</h1>
 
       <ThoughtForm onCreate={handleCreate} />
 
