@@ -35,6 +35,8 @@ function App() {
       })
   }, [])
   const handleLike = (id) => {
+    setLikeError('')
+
     fetch(`${API_URL}/thoughts/${id}/like`, {
       method: 'POST',
     })
@@ -97,9 +99,9 @@ function App() {
       {likeError && <p role="alert">{likeError}</p>}
 
       {isLoading ? (
-        <p>Loading happy thoughts...</p>
+        <p role="status">Loading happy thoughts...</p>
       ) : error ? (
-        <p>{error}</p>
+        <p role="alert">{error}</p>
       ) : (
         thoughts.map((thought) => (
           <Thought

@@ -7,14 +7,6 @@ main {
   box-sizing: border-box;
 }
 
-/* Page heading */
-h1 {
-  margin: 0 0 28px;
-  font-size: 2rem;
-  text-align: center;
-  color: #222;
-}
-
 /* Form */
 .thought-form {
   display: flex;
@@ -59,6 +51,7 @@ h1 {
   background: #ffa6a6;
   color: #222;
   font-weight: 500;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -145,6 +138,13 @@ button:focus-visible {
 }
 
 /* Responsive design */
+@media (max-width: 360px) {
+  .submit-button {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 480px) {
   main {
     padding: 24px 18px 36px;

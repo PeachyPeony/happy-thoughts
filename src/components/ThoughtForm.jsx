@@ -8,6 +8,8 @@ function ThoughtForm({ onCreate }) {
     const handleSubmit = (event) => {
         event.preventDefault()
 
+        const trimmedMessage = message.trim()
+
         if (!trimmedMessage || isSubmitting) return
 
         setError('')

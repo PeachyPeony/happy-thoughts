@@ -44,7 +44,9 @@ function Thought({ thought, onLike }) {
                         ❤️
                     </button>
 
-                    <span className="heart-count">x {thought.hearts}</span>
+                    <span className="heart-count" aria-label={`${thought.hearts} hearts`}>
+                        x {thought.hearts}
+                    </span>
                 </div>
                 <time className="thought-time" dateTime={thought.createdAt}>
                     {getTimeAgo(thought.createdAt)}
